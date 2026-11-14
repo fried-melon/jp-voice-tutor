@@ -12,7 +12,7 @@ import{mintSession,verifySession,renewSession,parseSessionKey,sessionCookieHeade
 // Disabled by default: no route is reachable unless REVIEW_WRITES_ENABLED==='yes'.
 export{ReviewProjectionDO}from'./review-projection-do.mjs';
 export{GrantDO}from'./grant-do.mjs';
-const lessons=JSON.parse(readFileSync('/home/sandbox/jp-tutor/source/content/lessons.v1.json','utf8'));
+const lessons=JSON.parse(readFileSync('content/lessons.v1.json','utf8'));
 const prompt='synthetic';
 const JWKS=createRemoteJWKSet(new URL('https://www.googleapis.com/oauth2/v3/certs'),{timeoutDuration:5000,cooldownDuration:30000,cacheMaxAge:3600000});
 export async function verifyOwner(token,env,keys=JWKS){const{payload}=await jwtVerify(token,keys,{algorithms:['RS256'],audience:env.GOOGLE_CLIENT_ID,issuer:['https://accounts.google.com','accounts.google.com'],requiredClaims:['sub','aud','iss','exp','iat']});if(payload.sub!==env.OWNER_GOOGLE_SUB)throw Error('owner_only');return payload;}

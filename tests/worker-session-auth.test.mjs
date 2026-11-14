@@ -4,7 +4,7 @@ import {readFileSync, writeFileSync} from 'node:fs';
 import {generateSessionKey, parseSessionKey, mintSession} from '../shared/session-cookie.mjs';
 // Import the real worker with content imports stubbed (same pattern as tests/worker/exact-auth-runtime.mjs).
 const source = readFileSync('worker/index.mjs', 'utf8')
- .replace(/^import lessons from'.*';$/m, "const lessons=JSON.parse(readFileSync('/home/sandbox/jp-tutor/source/content/lessons.v1.json','utf8'));")
+ .replace(/^import lessons from'.*';$/m, "const lessons=JSON.parse(readFileSync('content/lessons.v1.json','utf8'));")
  .replace(/^import prompt from'.*';$/m, "const prompt='synthetic';");
 const genPath = 'worker/.session-auth-test.gen.mjs';
 writeFileSync(genPath, "import {readFileSync} from 'node:fs';\n" + source);

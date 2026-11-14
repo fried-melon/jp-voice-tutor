@@ -9,7 +9,7 @@ import {readFileSync, writeFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 import {generateSessionKey, parseSessionKey, mintSession} from '../shared/session-cookie.mjs';
 const source = readFileSync('worker/index.mjs', 'utf8')
- .replace(/^import lessons from'.*';$/m, "const lessons=JSON.parse(readFileSync('/home/sandbox/jp-tutor/source/content/lessons.v1.json','utf8'));")
+ .replace(/^import lessons from'.*';$/m, "const lessons=JSON.parse(readFileSync('content/lessons.v1.json','utf8'));")
  .replace(/^import prompt from'.*';$/m, "const prompt='synthetic';");
 writeFileSync('worker/.notes-routing-test.gen.mjs', "import {readFileSync} from 'node:fs';\n" + source);
 const worker = (await import('../worker/.notes-routing-test.gen.mjs')).default;
