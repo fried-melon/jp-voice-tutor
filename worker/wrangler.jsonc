@@ -1,0 +1,18 @@
+{
+  // No API key, owner identity, OAuth client, or privacy approval is bundled.
+  // Missing configuration returns 503 without contacting Gemini.
+  "name": "jp-tutor-owner-token",
+  "main": "index.mjs",
+  "compatibility_date": "2026-10-26",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {"NOTES_ENABLED": "yes"},
+  "send_metrics": false,
+  "observability": {"enabled": false},
+  "upload_source_maps": false,
+  "assets": {"directory": "../dist", "binding": "ASSETS", "run_worker_first": ["/api/*"]},
+  "rules": [{"type": "Text", "globs": ["**/*.md"], "fallthrough": true}],
+  "d1_databases": [{"binding": "NOTES_DB", "database_name": "jp-tutor-notes", "database_id": "63d43a90-6ac0-4081-8bf6-a506632c32bc"}],
+  "durable_objects": {"bindings": [{"name": "LIMITS", "class_name": "IssuanceLimit"}]},
+  "migrations": [{"tag": "v1", "new_sqlite_classes": ["IssuanceLimit"]}, {"tag": "v2", "new_sqlite_classes": ["ReviewProjectionDO"]}]
+}

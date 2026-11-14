@@ -1,0 +1,897 @@
+{
+  "status": "partial versioned reconstruction, not original commit",
+  "applied": [
+    {
+      "kind": "literal-file-body",
+      "file": "package.json",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": ".gitignore",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tsconfig.json",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "vite.config.ts",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "scripts/sync-content.mjs",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "prompts/tutor-ja.md",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "index.html",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/ui.ts",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/audio.ts",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "public/mic-worklet.js",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/avatar.ts",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/gemini-live.ts",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/main.ts",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Monday, October 26, 2026, 5:37:35 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Monday, October 26, 2026, 5:40:11 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "public/favicon.svg",
+      "time": "Monday, October 26, 2026, 5:40:11 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": ".github/workflows/deploy.yml",
+      "time": "Monday, October 26, 2026, 5:41:36 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/content.test.mjs",
+      "time": "Monday, October 26, 2026, 5:41:36 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-18",
+      "time": "Monday, October 26, 2026, 5:42:39 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 1,
+      "time": "Monday, October 26, 2026, 5:43:43 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "scripts/restore-avatar.mjs",
+      "time": "Monday, October 26, 2026, 5:45:28 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "content/lessons.v1.json",
+      "time": "Monday, October 26, 2026, 5:56:57 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "prompts/tutor-ja.md",
+      "time": "Monday, October 26, 2026, 5:56:57 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 3,
+      "time": "Monday, October 26, 2026, 5:56:57 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Monday, October 26, 2026, 5:56:57 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/content.test.mjs",
+      "time": "Monday, October 26, 2026, 5:57:04 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-17",
+      "time": "Monday, October 26, 2026, 5:58:47 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/mascot.ts",
+      "time": "Monday, October 26, 2026, 6:01:16 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 4,
+      "time": "Monday, October 26, 2026, 6:01:16 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 5,
+      "time": "Monday, October 26, 2026, 6:01:57 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/gemini-live.ts",
+      "time": "Monday, October 26, 2026, 8:38:57 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "public/mic-worklet.js",
+      "time": "Monday, October 26, 2026, 8:38:57 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 6,
+      "time": "Monday, October 26, 2026, 8:38:57 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-16",
+      "time": "Monday, October 26, 2026, 8:39:25 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 7,
+      "time": "Monday, October 26, 2026, 8:44:34 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "scripts/verify-assets.mjs",
+      "time": "Monday, October 26, 2026, 8:44:34 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 8,
+      "time": "Monday, October 26, 2026, 8:46:33 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/resampler-quality.test.mjs",
+      "time": "Monday, October 26, 2026, 8:46:33 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "scripts/browser-tests.mjs",
+      "time": "Monday, October 26, 2026, 8:48:11 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 10,
+      "time": "Monday, October 26, 2026, 8:48:11 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "server/token-service.mjs",
+      "time": "Monday, October 26, 2026, 8:51:47 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "server/dev-server.mjs",
+      "time": "Monday, October 26, 2026, 8:51:47 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-service.test.mjs",
+      "time": "Monday, October 26, 2026, 8:51:47 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "server/README.md",
+      "time": "Monday, October 26, 2026, 8:53:23 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-service.test.mjs",
+      "time": "Monday, October 26, 2026, 8:53:23 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/live-contract.mjs",
+      "time": "Monday, October 26, 2026, 8:58:07 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/live-contract.d.mts",
+      "time": "Monday, October 26, 2026, 8:58:07 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/token-client.ts",
+      "time": "Monday, October 26, 2026, 8:58:07 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 15,
+      "time": "Monday, October 26, 2026, 8:58:07 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-service.test.mjs",
+      "time": "Monday, October 26, 2026, 8:58:07 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/live-contract.test.mjs",
+      "time": "Monday, October 26, 2026, 8:58:07 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/vite-env.d.ts",
+      "time": "Monday, October 26, 2026, 8:58:23 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "worker/index.mjs",
+      "time": "Monday, October 26, 2026, 8:59:09 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "worker/README.md",
+      "time": "Monday, October 26, 2026, 8:59:09 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 16,
+      "time": "Monday, October 26, 2026, 9:00:55 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "vite.config.ts",
+      "time": "Monday, October 26, 2026, 9:01:22 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/worker/README.md",
+      "time": "Monday, October 26, 2026, 9:03:24 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "local.html",
+      "time": "Monday, October 26, 2026, 11:25:13 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/local-practice.ts",
+      "time": "Monday, October 26, 2026, 11:25:13 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/local-practice.css",
+      "time": "Monday, October 26, 2026, 11:25:13 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 18,
+      "time": "Monday, October 26, 2026, 11:25:13 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-10",
+      "time": "Monday, October 26, 2026, 11:25:34 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/browser/viseme-probe.cjs",
+      "time": "Monday, October 26, 2026, 11:26:58 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/browser/temp-quality-probe.cjs",
+      "time": "Monday, October 26, 2026, 11:29:17 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": ".gitignore",
+      "time": "Tuesday, October 27, 2026, 12:22:20 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "worker/wrangler.jsonc",
+      "time": "Tuesday, October 27, 2026, 12:29:19 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "worker/README.md",
+      "time": "Tuesday, October 27, 2026, 12:29:47 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-client.test.mjs",
+      "time": "Tuesday, October 27, 2026, 12:32:57 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/browser/token-before-mic.cjs",
+      "time": "Tuesday, October 27, 2026, 6:58:49 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 21,
+      "time": "Tuesday, October 27, 2026, 6:59:18 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/owner-login.ts",
+      "time": "Tuesday, October 27, 2026, 7:18:19 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 23,
+      "time": "Tuesday, October 27, 2026, 7:18:19 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "scripts/preview-asset.py",
+      "time": "Tuesday, October 27, 2026, 7:18:48 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 24,
+      "time": "Tuesday, October 27, 2026, 7:18:48 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "public/.assetsignore",
+      "time": "Tuesday, October 27, 2026, 7:18:48 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "public/_headers",
+      "time": "Tuesday, October 27, 2026, 7:18:48 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/owner-login.test.mjs",
+      "time": "Tuesday, October 27, 2026, 7:19:02 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/browser/google-login.cjs",
+      "time": "Tuesday, October 27, 2026, 7:19:19 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 25,
+      "time": "Tuesday, October 27, 2026, 7:19:57 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-9",
+      "time": "Tuesday, October 27, 2026, 7:25:28 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "scripts/verify-owner-proof.mjs",
+      "time": "Tuesday, October 27, 2026, 7:37:29 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/DEVICE-ACCEPTANCE.md",
+      "time": "Tuesday, October 27, 2026, 7:40:38 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-8",
+      "time": "Tuesday, October 27, 2026, 7:43:14 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "prompts/tutor-ja.md",
+      "time": "Tuesday, October 27, 2026, 7:43:29 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-wire.test.mjs",
+      "time": "Tuesday, October 27, 2026, 7:43:29 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 29,
+      "time": "Tuesday, October 27, 2026, 7:43:29 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/nickname.mjs",
+      "time": "Tuesday, October 27, 2026, 7:43:47 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 30,
+      "time": "Tuesday, October 27, 2026, 7:43:47 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/nickname.test.mjs",
+      "time": "Tuesday, October 27, 2026, 7:43:47 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Tuesday, October 27, 2026, 7:46:11 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-service.test.mjs",
+      "time": "Tuesday, October 27, 2026, 7:46:11 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/LEARNING-LOOP-INTEGRATION.md",
+      "time": "Tuesday, October 27, 2026, 7:46:11 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-7",
+      "time": "Tuesday, October 27, 2026, 7:47:54 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Tuesday, October 27, 2026, 7:51:16 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/recall.mjs",
+      "time": "Tuesday, October 27, 2026, 7:52:23 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/recall.test.mjs",
+      "time": "Tuesday, October 27, 2026, 7:52:23 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 31,
+      "time": "Tuesday, October 27, 2026, 7:52:23 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Tuesday, October 27, 2026, 7:52:23 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "prompts/tutor-ja.md",
+      "time": "Tuesday, October 27, 2026, 7:52:23 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 32,
+      "time": "Tuesday, October 27, 2026, 7:52:35 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-5",
+      "time": "Tuesday, October 27, 2026, 7:53:01 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-4",
+      "time": "Tuesday, October 27, 2026, 7:54:22 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "prompts/tutor-ja.md",
+      "time": "Tuesday, October 27, 2026, 7:55:17 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 33,
+      "time": "Tuesday, October 27, 2026, 7:55:17 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/playback-envelope.mjs",
+      "time": "Tuesday, October 27, 2026, 7:56:15 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 34,
+      "time": "Tuesday, October 27, 2026, 7:56:15 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/playback-envelope.test.mjs",
+      "time": "Tuesday, October 27, 2026, 7:56:15 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/LEARNING-LOOP-INTEGRATION.md",
+      "time": "Tuesday, October 27, 2026, 7:57:58 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/worker/README.md",
+      "time": "Tuesday, October 27, 2026, 8:03:19 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/worker/README.md",
+      "time": "Tuesday, October 27, 2026, 8:11:29 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/review-queue.mjs",
+      "time": "Tuesday, October 27, 2026, 8:12:52 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-queue.test.mjs",
+      "time": "Tuesday, October 27, 2026, 8:12:52 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/LEARNING-LOOP-INTEGRATION.md",
+      "time": "Tuesday, October 27, 2026, 8:12:52 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/provider/README.md",
+      "time": "Tuesday, October 27, 2026, 8:13:17 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/fsrs-adapter.mjs",
+      "time": "Tuesday, October 27, 2026, 9:38:51 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/fsrs-adapter.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:38:51 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/SCHEDULER-CONTRACT.md",
+      "time": "Tuesday, October 27, 2026, 9:39:29 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/LEARNING-LOOP-INTEGRATION.md",
+      "time": "Tuesday, October 27, 2026, 9:39:29 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/fsrs-adapter.mjs",
+      "time": "Tuesday, October 27, 2026, 9:39:52 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/fsrs-adapter.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:39:52 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 37,
+      "time": "Tuesday, October 27, 2026, 9:40:10 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/fsrs-adapter.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:40:10 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/daily-review-plan.mjs",
+      "time": "Tuesday, October 27, 2026, 9:40:46 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/daily-review-plan.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:40:46 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/review-schema.mjs",
+      "time": "Tuesday, October 27, 2026, 9:41:02 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-schema.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:41:02 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/offline-reviews.mjs",
+      "time": "Tuesday, October 27, 2026, 9:41:22 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/offline-reviews.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:41:22 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 38,
+      "time": "Tuesday, October 27, 2026, 9:41:53 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/fsrs-adapter.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:41:53 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/fsrs-adapter.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:42:23 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/review-endpoint-contract.mjs",
+      "time": "Tuesday, October 27, 2026, 9:45:03 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-endpoint-contract.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:45:03 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-endpoint-contract.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:45:20 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-3",
+      "time": "Tuesday, October 27, 2026, 9:45:37 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/SCHEDULER-CONTRACT.md",
+      "time": "Tuesday, October 27, 2026, 9:45:55 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/worker/README.md",
+      "time": "Tuesday, October 27, 2026, 9:46:57 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/review-schema.mjs",
+      "time": "Tuesday, October 27, 2026, 9:49:22 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 40,
+      "time": "Tuesday, October 27, 2026, 9:49:22 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-schema.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:49:22 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 41,
+      "time": "Tuesday, October 27, 2026, 9:49:45 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/review-test-ledger.mjs",
+      "time": "Tuesday, October 27, 2026, 9:49:45 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-test-ledger.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:49:45 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/testcopy-projector.mjs",
+      "time": "Tuesday, October 27, 2026, 9:50:00 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/testcopy-projector.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:50:00 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/SCHEDULER-CONTRACT.md",
+      "time": "Tuesday, October 27, 2026, 9:50:13 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/review-schema.mjs",
+      "time": "Tuesday, October 27, 2026, 9:50:37 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 42,
+      "time": "Tuesday, October 27, 2026, 9:50:37 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/review-schema.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:50:37 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/testcopy-projector.mjs",
+      "time": "Tuesday, October 27, 2026, 9:51:02 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/testcopy-projector.test.mjs",
+      "time": "Tuesday, October 27, 2026, 9:51:02 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/SCHEDULER-CONTRACT.md",
+      "time": "Tuesday, October 27, 2026, 9:52:43 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "experiments/initial-face/demo.html",
+      "time": "Tuesday, October 27, 2026, 9:57:53 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/browser/initial2d-playback.cjs",
+      "time": "Tuesday, October 27, 2026, 10:00:12 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Tuesday, October 27, 2026, 10:00:43 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "src/style.css",
+      "time": "Tuesday, October 27, 2026, 10:01:44 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "experiments/initial-face/README.md",
+      "time": "Tuesday, October 27, 2026, 10:01:44 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-2",
+      "time": "Tuesday, October 27, 2026, 10:02:16 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "experiments/initial-face/README.md",
+      "time": "Tuesday, October 27, 2026, 10:03:58 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "shared/sheets-oauth-security.mjs",
+      "time": "Tuesday, October 27, 2026, 10:04:58 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/sheets-oauth-security.test.mjs",
+      "time": "Tuesday, October 27, 2026, 10:04:58 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 46,
+      "time": "Tuesday, October 27, 2026, 10:05:33 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/sheets-oauth-security.test.mjs",
+      "time": "Tuesday, October 27, 2026, 10:05:33 AM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/OWNER-TRIAL-HANDOFF.md",
+      "time": "Tuesday, October 27, 2026, 10:05:33 AM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-1",
+      "time": "Tuesday, October 27, 2026, 3:33:36 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/token-client.test.mjs",
+      "time": "Tuesday, October 27, 2026, 3:33:52 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/browser/owner-start-errors.cjs",
+      "time": "Tuesday, October 27, 2026, 3:34:06 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 47,
+      "time": "Tuesday, October 27, 2026, 3:35:38 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/owner-login.test.mjs",
+      "time": "Tuesday, October 27, 2026, 3:35:38 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": "extra-0",
+      "time": "Tuesday, October 27, 2026, 3:35:57 PM KST"
+    },
+    {
+      "kind": "reviewed-local-transform",
+      "block": 48,
+      "time": "Tuesday, October 27, 2026, 3:38:25 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/OWNER-TRIAL-HANDOFF.md",
+      "time": "Tuesday, October 27, 2026, 3:38:58 PM KST"
+    },
+    {
+      "kind": "literal-file-body",
+      "file": "tests/worker/README.md",
+      "time": "Tuesday, October 27, 2026, 3:38:58 PM KST"
+    }
+  ],
+  "unresolved_transform_errors": [
+    {
+      "block": 9,
+      "type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/sandbox/tutor-reconstructed/tests/browser/review-e2e.cjs'"
+    },
+    {
+      "block": 11,
+      "type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/sandbox/tutor-reconstructed/tests/browser/review-e2e.cjs'"
+    },
+    {
+      "block": 13,
+      "type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/sandbox/tutor-reconstructed/tests/browser/real-playback.cjs'"
+    },
+    {
+      "block": 17,
+      "type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/sandbox/tutor-reconstructed/tests/worker/security-tests.mjs'"
+    },
+    {
+      "block": 20,
+      "type": "AssertionError",
+      "error": ""
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "scenario": "konbini",
+    "ja": "ポイントカードはお持ちですか",
+    "ko": "포인트 카드 가지고 계세요?",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 2,
+    "scenario": "konbini",
+    "ja": "袋はご利用ですか",
+    "ko": "봉투 필요하세요?",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 3,
+    "scenario": "konbini",
+    "ja": "少々お待ちください",
+    "ko": "잠깐만 기다려 주세요",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 4,
+    "scenario": "konbini",
+    "ja": "大丈夫です",
+    "ko": "괜찮아요",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 5,
+    "scenario": "konbini",
+    "ja": "お願いします",
+    "ko": "부탁해요",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 6,
+    "scenario": "konbini",
+    "ja": "現金で",
+    "ko": "현금으로요",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 7,
+    "scenario": "konbini",
+    "ja": "カードで",
+    "ko": "카드로요",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  },
+  {
+    "id": 8,
+    "scenario": "konbini",
+    "ja": "これをください",
+    "ko": "이걸로 주세요",
+    "level": 1,
+    "last_asked": "",
+    "accuracy": ""
+  }
+]

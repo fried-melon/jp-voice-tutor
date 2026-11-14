@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import{MAX_AUDIO_BACKLOG_BYTES,audioBacklogged,usageSummary}from'../shared/live-safety.mjs';
+test('realtime audio backlog has a fixed fail-closed threshold',()=>{assert.equal(audioBacklogged(0),false);assert.equal(audioBacklogged(MAX_AUDIO_BACKLOG_BYTES),false);assert.equal(audioBacklogged(MAX_AUDIO_BACKLOG_BYTES+1),true);});
+test('usage renders only finite allowlisted counts without raw provider data',()=>{const text=usageSummary({promptTokenCount:2105,responseTokenCount:125,totalTokenCount:2230,private:'not-rendered',promptTokensDetails:[{raw:'not-rendered'}]});assert.match(text,/2,105/);assert.match(text,/125/);assert.ok(!text.includes('not-rendered'));assert.ok(!usageSummary({promptTokenCount:Infinity,responseTokenCount:-1,totalTokenCount:'99'}).includes('99'));});

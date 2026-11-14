@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{readFileSync}from'node:fs';import ts from'typescript';
+const source=readFileSync(new URL('../src/owner-login.ts',import.meta.url),'utf8');
+const compiled=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const{mountOwnerLogin}=await import('data:text/javascript;base64,'+Buffer.from(compiled).toString('base64'));
+test('Google login rejects invalid client before touching DOM or network',async()=>{await assert.rejects(mountOwnerLogin({},'invalid',()=>{}));});
+test('Google proof memory-only; no access token, OAuth scopes or storage',()=>{assert.ok(source.includes('nonce'));assert.ok(source.includes('claims.nonce!==nonce'));assert.ok(source.includes('claims.aud!==clientId'));assert.ok(source.includes('pagehide'));assert.ok(!/localStorage|sessionStorage|access_token|client_secret/.test(source));});
+test('owner-check authenticates exact owner without minting token or consuming quota',()=>{const worker=readFileSync(new URL('../worker/index.mjs',import.meta.url),'utf8');const check=worker.indexOf('if(ownerCheck)return reply(200');assert.ok(check>worker.indexOf('identity=await verifyOwner'));assert.ok(check<worker.indexOf('const reservation='));assert.ok(check<worker.indexOf("fetch('https://generativelanguage"));assert.ok(worker.includes("voiceEnabled:evaluateGate({flag:env.API_PRIVACY_CONFIRMED,openUntil:env.GATE_OPEN_UNTIL,now:Date.now()}).open"))});

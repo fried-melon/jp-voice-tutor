@@ -1,0 +1,1 @@
+Excluded from this zip (restorable from pinned source+hash): public/avatar.glb only — restore with node scripts/restore-avatar.mjs (pinned TalkingHead rev + sha256 in the script; enforced by scripts/verify-assets.mjs). public/avatar-hosting-preview.glb IS included and its sha256 is pinned in scripts/verify-assets.mjs.

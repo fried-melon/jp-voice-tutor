@@ -1,0 +1,31 @@
+import test from'node:test';import assert from'node:assert/strict';
+import{createTokenClient}from'../shared/sheets-token-client.mjs';
+import{createSheetsClient}from'../shared/sheets-api-client.mjs';
+test('token client posts pinned form requests and maps Google errors exactly',async()=>{
+ const calls=[];const fetcher=async(url,init)=>{calls.push({url,init});return Response.json({access_token:'at',refresh_token:'rt',expires_in:3600})};
+ const c=createTokenClient({fetcher});
+ const r=await c.exchange({code:'code',clientId:'id',clientSecret:'secret',redirectUri:'https://app.example/cb'});
+ assert.equal(r.refresh_token,'rt');
+ assert.equal(calls[0].url,'https://oauth2.googleapis.com/token');
+ const body=new URLSearchParams(calls[0].init.body);assert.equal(body.get('grant_type'),'authorization_code');assert.equal(body.get('code'),'code');
+ await assert.rejects(c.refresh({refreshToken:'x',clientId:'id',clientSecret:'s',endpoint:'https://evil.example/token'}),/Unexpected token endpoint/);
+ const denying=createTokenClient({fetcher:async()=>Response.json({error:'invalid_grant'},{status:400})});
+ await assert.rejects(denying.refresh({refreshToken:'x',clientId:'id',clientSecret:'s'}),/invalid_grant/);
+ const down=createTokenClient({fetcher:async()=>{throw Error('boom')}});
+ const e=await down.refresh({refreshToken:'x',clientId:'id',clientSecret:'s'}).catch(x=>x);assert.equal(e.retryable,true);
+ await assert.rejects(c.exchange({code:'',clientId:'id',clientSecret:'s',redirectUri:'u'}),/Missing exchange input/);
+});
+test('sheets client enforces pinned endpoints, RAW-only appends and file id shape',async()=>{
+ const calls=[];const fetcher=async(url,init)=>{calls.push({url,init});return Response.json(url.includes(':append')?{}:{values:[['h'],['r1']]})};
+ const s=createSheetsClient({fetcher,getAccessToken:async()=>'at'});
+ assert.deepEqual(await s.readRows('abc-def_12345'),[['h'],['r1']]);
+ assert.equal(calls[0].url,'https://sheets.googleapis.com/v4/spreadsheets/abc-def_12345/values/A1:Z300?majorDimension=ROWS');
+ assert.equal(calls[0].init.headers.Authorization,'Bearer at');
+ await s.appendRaw('abc-def_12345',['a','b']);
+ assert.ok(calls[1].url.includes('valueInputOption=RAW'));assert.deepEqual(JSON.parse(calls[1].init.body).values,[['a','b']]);
+ await assert.rejects(s.appendRaw('abc-def_12345',['a'],{valueInputOption:'USER_ENTERED'}),/Non-RAW/);
+ await assert.rejects(s.readRows('../etc'),/Invalid file id/);
+ await assert.rejects(s.appendRaw('abc-def_12345',[]),/Invalid row/);
+ const failing=createSheetsClient({fetcher:async()=>Response.json({error:{status:'PERMISSION_DENIED'}},{status:403}),getAccessToken:async()=>'at'});
+ const e=await failing.readRows('abc-def_12345').catch(x=>x);assert.match(e.message,/sheets_error/);assert.equal(e.retryable,false);
+});

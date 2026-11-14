@@ -1,0 +1,2 @@
+import test from'node:test';import assert from'node:assert/strict';import{playbackJaw}from'../shared/playback-envelope.mjs';
+test('visual mouth follows actual output silence rather than network arrival time',()=>{assert.equal(playbackJaw(new Float32Array(512)),0);assert.equal(playbackJaw([]),0);assert.ok(playbackJaw(new Float32Array(512).fill(.1))>.3);assert.equal(playbackJaw(new Float32Array(512).fill(1)),.65);assert.equal(playbackJaw(new Float32Array(512)),0)});

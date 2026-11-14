@@ -1,0 +1,9 @@
+node_modules/
+dist/
+public/avatar.glb
+.DS_Store
+*.log
+.vault/
+deployment/
+build-env.txt
+.dev.vars
