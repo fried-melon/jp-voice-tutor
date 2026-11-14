@@ -18,6 +18,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node scripts/restore-avatar.mjs
       - run: node scripts/verify-assets.mjs
       - run: npm test
       - run: npm run build
