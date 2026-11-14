@@ -5,8 +5,8 @@ export type OwnerCheckState='signed_out'|'unverified'|'checking'|'verified_close
 export function mountOwnerCheck(container:HTMLElement,endpoint:string,fetcher:typeof fetch=fetch,onState:(state:OwnerCheckState)=>void=()=>{}){
  const state=(value:OwnerCheckState)=>onState(value);
  let proof='',revision=0,busy=false,abort:AbortController|undefined;
- const panel=document.createElement('section');panel.className='owner-diagnostic';panel.setAttribute('aria-label','본인 확인 상태');
- const title=document.createElement('strong');title.textContent='본인 확인 상태';
+ const panel=document.createElement('section');panel.className='owner-diagnostic';panel.setAttribute('aria-label','본인 확인 상세');
+ const title=document.createElement('strong');title.textContent='본인 확인 상세 (점검용)';
  const result=document.createElement('p');result.className='privacy';result.setAttribute('role','status');result.setAttribute('aria-live','polite');result.textContent='이 탭에는 로그인 정보가 없어요. 아래 확인 버튼은 로그인 알림을 보내지 않아요.';
  const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='본인 확인만 점검 (음성 없음)';button.disabled=true;
  const help=document.createElement('p');help.className='privacy';help.textContent='현재 탭의 로그인 정보만 확인해요. 마이크·음성·사용 횟수는 쓰지 않아요. 새로고침하거나 로그인 정보를 지우면 다시 로그인해야 해요.';
