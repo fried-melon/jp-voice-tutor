@@ -57,6 +57,17 @@ if(!cfg.assets||cfg.assets.binding!=='ASSETS')fail('assets binding missing or re
 if(cfg.name!=='jp-tutor-owner-token')fail('worker name mismatch: '+cfg.name);
 ok('config: LIMITS+NOTES_DB+ASSETS only, migrations [v1,v2], vars NOTES_ENABLED=yes');
 
+// 3b. Stale-asset guard: deployment/dist static assets must be byte-identical to
+// the pinned public/ files (2026-11-15 incident: a deploy shipped a stale GLB from
+// an earlier test build because this script validates deployment/dist without
+// rebuilding). If this fails, re-run npm run build with deployment/build-env.txt.
+import{createHash}from'node:crypto';
+const h=p=>createHash('sha256').update(readFileSync(p)).digest('hex');
+for(const glb of['avatar.glb','avatar-hosting-preview.glb']){
+ if(h(dist+glb)!==h(root+'public/'+glb))fail('deployment/dist/'+glb+' differs from public/ - stale build, re-run npm run build');
+}
+ok('assets: deployment/dist GLBs byte-identical to public/');
+
 // 4. Worker bundle freshness: deployment/worker/index.js must exist and export only known classes.
 const w=readFileSync(deploy+'worker/index.js','utf8');
 for(const cls of['IssuanceLimit','ReviewProjectionDO','GrantDO'])if(w.includes('class '+cls))ok('worker exports class '+cls+' (unbound classes are inert)');
