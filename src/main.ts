@@ -1,5 +1,5 @@
 import {usageSummary} from '../shared/live-safety.mjs';
-import{parseTurnMarker,diffChars}from'../shared/turn-feedback.mjs';import{buildClosingLines}from'../shared/closing-summary.mjs';
+import{parseTurnMarker,diffChars,resolveTurnOutcome}from'../shared/turn-feedback.mjs';import{buildClosingLines}from'../shared/closing-summary.mjs';
 import './style.css';
 import {createRecallState,requestRecall} from '../shared/recall.mjs';
 import {validateNickname} from '../shared/nickname.mjs';
@@ -148,14 +148,19 @@ function storageSet(){try{localStorage.removeItem('jp-tutor-key');}catch{}}
 storageSet();
 hintSeen=true; // The opening card always models the example answer; in-session recall is never independent evidence.
 function handleFeedbackTurn(text:string){
- const{marker,rest}=parseTurnMarker(text);if(!marker)return;
+ const parsed=parseTurnMarker(text);if(!parsed.marker)return;
+ // The model's pass marker is never sufficient: verify the ASR transcript against
+ // the lesson's accepted atoms first (spec C). An unverified "pass" is a correction.
+ const lessonForCheck=lessons.find(l=>l.id===lessonSelect.value);
+ const outcome=resolveTurnOutcome({marker:parsed.marker,userText:userTurnText,lesson:lessonForCheck});
+ const marker=outcome.marker;const rest=parsed.rest;
  const box=$('transcript');const para=box.lastElementChild as HTMLElement|null;
  if(para?.dataset.role==='model'&&rest!==text){para.textContent=rest;para.dataset.feedback=marker;const badge=document.createElement('span');badge.className='fb-badge fb-'+marker;badge.textContent=marker==='pass'?'통과':marker==='correction'?'교정':'못 들음';para.prepend(badge);}
  const cmp=$('compare');
  if(marker==='unclear'){cmp.hidden=true;return;}
  if(marker==='pass'){correctionStreak=0;
   const lesson=lessons.find(l=>l.id===lessonSelect.value);
-  cmp.replaceChildren();const ok=document.createElement('p');ok.className='cmp-pass';ok.textContent='방금 말한 게 목표 문장과 같아요.';const t=document.createElement('p');t.className='cmp-line';t.lang='ja';t.textContent='목표: '+(lesson?.target||'');cmp.append(ok,t);cmp.hidden=false;
+  cmp.replaceChildren();const ok=document.createElement('p');ok.className='cmp-pass';ok.textContent='방금 발화가 목표 표현과 문자로 일치했어요.';const t=document.createElement('p');t.className='cmp-line';t.lang='ja';t.textContent='인식된 표현: '+outcome.atom+' · 목표: '+(lesson?.target||'');cmp.append(ok,t);cmp.hidden=false;
   if(!applicationInjected&&lesson){applicationInjected=true;live?.recall('학습자가 오늘 목표를 1회 수행했습니다. 지금부터 응용 단계입니다. 마무리 제안은 아직 하지 말고, 선택된 연습의 accepted 범위 안 표현만 사용하는 검증된 변형 턴을 한 번 진행해 주세요. 그 뒤에는 클라이언트의 정리 문구 주입을 기다려 주세요.');}
   return;}
  correctionStreak++;cmp.hidden=true;
