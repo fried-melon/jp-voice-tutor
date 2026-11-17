@@ -35,7 +35,7 @@ The default app behavior remains MPFB unless VITE_AVATAR_SHINO is exactly true.
 
 - No real voice-provider call or device audio test was run for this change.
 - Production and the evening owner test still use the existing deployed avatar.
-- The source school uniform is not role-specific travel clothing. That still needs a decision or a separate visual treatment before claiming role-appropriate appearance.
+- The source bow accessory is hidden in the latest preview, leaving a neutral collared shirt and navy vest. The source skirt still exists outside the current upper-body crop. This is not a complete scene-specific wardrobe.
 - The adapter was checked for roughly 90 seconds, not a full four-minute session.
 - Full app viewport reviewed at 1280x800 and 390x844. Shino-only camera framing adjusted so the status card no longer covers the face.
 - The new asset is optional; production deployment configuration, asset pins and final rollout are not changed.

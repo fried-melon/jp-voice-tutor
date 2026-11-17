@@ -8,6 +8,8 @@ export function configureShino(head){
 }
 export function prepareShino(gltf,reference){
  const root=gltf.scene;
+ // Hide the source bow accessory for a neutral collared-shirt/vest preview.
+ root.traverse(o=>{if(o.isMesh&&o.material?.name==='F00_001_01_Accessory_01_CLOTH')o.visible=false;});
  const rest=Object.fromEntries(Object.entries(reference.quaternions).map(([k,a])=>[k,new THREE.Quaternion().fromArray(a)]));
  const refPos=Object.fromEntries(Object.entries(reference.positions).map(([k,a])=>[k,new THREE.Vector3().fromArray(a)]));
  // Convert VRM's forward axis before fitting the bind frames. GLTFLoader can

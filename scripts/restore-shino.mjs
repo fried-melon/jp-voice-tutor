@@ -1,4 +1,4 @@
-// Recovered from transcript 2026-11-15 20:25: fetch + convert Sendagaya Shino (CC0) deterministically.
+// Fetch and convert Sendagaya Shino (CC0) deterministically.
 import{writeFileSync,mkdirSync}from'node:fs';import{createHash}from'node:crypto';import{inflateRawSync}from'node:zlib';
 const ZIP_URL='https://opengameart.org/sites/default/files/sendagaya_shino.zip';
 const ZIP_SHA256='ff85ff42c1d041fd66dabdb36761a98557d7b55199f635769f3698a41c0a3696';
@@ -36,7 +36,7 @@ let bones=0,morphs=0;
 for(const n of gltf.nodes||[])if(BONES[n.name]){n.name=BONES[n.name];bones++;}
 for(const m of gltf.meshes||[]){
  if(m.extras?.targetNames)m.extras.targetNames=m.extras.targetNames.map(t=>MORPHS[t]?(morphs++,MORPHS[t]):t);
- for(const p of m.primitives||[])if(p.extras?.targetNames)p.extras.targetNames=p.extras.targetNames.map(t=>MORPHS[t]||t);
+ for(const p of m.primitives||[])if(p.extras?.targetNames)p.extras.targetNames=p.extras.targetNames.map(t=>MORPHS[t]?(morphs++,MORPHS[t]):t);
 }
 for(const m of gltf.meshes||[]){const names=m.primitives?.find(p=>p.extras?.targetNames)?.extras.targetNames;if(names)m.extras={...m.extras,targetNames:names};}
 if(bones<20)throw Error('Bone rename incomplete: '+bones);
