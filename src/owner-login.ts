@@ -36,6 +36,9 @@ export async function mountOwnerLogin(container:HTMLElement,clientId:string,onPr
    clearTimeout(expiry);currentProof=credential;onProof(credential);signout.hidden=false;revokeAll.hidden=false;note.textContent='Google 로그인 정보를 받았어요. 본인 여부는 연결할 때 서버에서 확인해요.';expiry=setTimeout(forget,Math.min(remaining,3600000));
   }catch{forget();note.textContent='로그인 응답을 사용할 수 없어요. 다시 로그인해 주세요.';}
  }});identity.renderButton(button,{theme:'outline',size:'large',text:'signin_with'});
+ // One Tap: the credential is delivered in-page, which also covers browsers
+ // where the button's popup flow cannot return the credential to this tab.
+ identity.prompt();
  return clear;
 }
 

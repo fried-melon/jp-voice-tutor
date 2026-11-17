@@ -39,12 +39,17 @@ function headers(origin){return{'Cache-Control':'no-store','Pragma':'no-cache','
 export default{async fetch(request,env){
  if(!new URL(request.url).pathname.startsWith('/api/')&&env.ASSETS)return env.ASSETS.fetch(request);
  const origin=request.headers.get('Origin');const allowed=env.APP_ORIGIN;
- const reply=(status,data,extra={})=>new Response(JSON.stringify(data),{status,headers:{...headers(origin===allowed?allowed:null),...extra}});
+ // Extra public app origins (e.g. the GitHub Pages mirror) may reach the same
+ // owner-verified APIs. Widens browser-origin reach only; every request still
+ // requires a valid owner credential or session. Comma-separated exact https origins.
+ const extraOrigins=(env.APP_EXTRA_ORIGINS||'').split(',').map(x=>x.trim()).filter(Boolean);
+ const matchedOrigin=origin&&[allowed,...extraOrigins].includes(origin)?origin:null;
+ const reply=(status,data,extra={})=>new Response(JSON.stringify(data),{status,headers:{...headers(matchedOrigin),...extra}});
  const ownerCheck=new URL(request.url).pathname==='/api/owner-check';
  const notesApi=new URL(request.url).pathname.startsWith('/api/notes/');
  if(new URL(request.url).pathname==='/api/review-events'){
   if(env.REVIEW_WRITES_ENABLED!=='yes'||!env.REVIEW_PROJECTION)return reply(503,{error:'review_writes_disabled'});
-  return acceptReviewRequest(request,{enabled:true,origin:allowed,ownerSub:env.OWNER_GOOGLE_SUB,verifyIdentity:async credential=>verifyOwner(credential,env),atomicAppend:async row=>{const stub=env.REVIEW_PROJECTION.get(env.REVIEW_PROJECTION.idFromName(env.OWNER_GOOGLE_SUB));const response=await stub.fetch('https://review.internal/project',{method:'POST',body:JSON.stringify({row})});return response.json()}});
+  return acceptReviewRequest(request,{enabled:true,origin:matchedOrigin,ownerSub:env.OWNER_GOOGLE_SUB,verifyIdentity:async credential=>verifyOwner(credential,env),atomicAppend:async row=>{const stub=env.REVIEW_PROJECTION.get(env.REVIEW_PROJECTION.idFromName(env.OWNER_GOOGLE_SUB));const response=await stub.fetch('https://review.internal/project',{method:'POST',body:JSON.stringify({row})});return response.json()}});
  }
  const path0=new URL(request.url).pathname;
  // Sheets TEST connection (GrantDO). Disabled unless SHEETS_AUTH_ENABLED==='yes'.
@@ -65,13 +70,13 @@ export default{async fetch(request,env){
  }
  const sessionMgmt=path0==='/api/session-logout'||path0==='/api/session-revoke-all';
  if((!ownerCheck&&!sessionMgmt&&!notesApi&&(!env.GEMINI_API_KEY||!evaluateGate({flag:env.API_PRIVACY_CONFIRMED,openUntil:env.GATE_OPEN_UNTIL,now:Date.now()}).open||!env.LIMITS))||!env.GOOGLE_CLIENT_ID||!env.OWNER_GOOGLE_SUB||!allowed)return reply(503,{error:'not_configured'});
- try{const configured=new URL(allowed);if(configured.origin!==allowed||configured.protocol!=='https:')return reply(503,{error:'invalid_origin_configuration'});}catch{return reply(503,{error:'invalid_origin_configuration'});}
- if(origin!==allowed)return reply(403,{error:'origin_denied'});
+ try{for(const configuredOrigin of [allowed,...extraOrigins]){const configured=new URL(configuredOrigin);if(configured.origin!==configuredOrigin||configured.protocol!=='https:')return reply(503,{error:'invalid_origin_configuration'});}}catch{return reply(503,{error:'invalid_origin_configuration'});}
+ if(!matchedOrigin)return reply(403,{error:'origin_denied'});
  if(!ownerCheck&&!notesApi&&path0!=='/api/live-token'&&path0!=='/api/session-logout'&&path0!=='/api/session-revoke-all')return reply(404,{error:'not_found'});
  if(request.method==='OPTIONS'){
   const method=request.headers.get('Access-Control-Request-Method');const fields=(request.headers.get('Access-Control-Request-Headers')||'').toLowerCase().split(',').map(x=>x.trim()).filter(Boolean);
   if(method!=='POST'||fields.some(x=>!['authorization','content-type'].includes(x)))return reply(403,{error:'preflight_denied'});
-  return new Response(null,{status:204,headers:{...headers(allowed),'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'authorization, content-type','Access-Control-Max-Age':'600','Vary':'Origin, Access-Control-Request-Method, Access-Control-Request-Headers'}});
+  return new Response(null,{status:204,headers:{...headers(matchedOrigin),'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'authorization, content-type','Access-Control-Max-Age':'600','Vary':'Origin, Access-Control-Request-Method, Access-Control-Request-Headers'}});
  }
  if(request.method!=='POST')return reply(405,{error:'method_not_allowed'});
  // Owner session cookie: an HttpOnly HMAC-signed re-auth credential scoped to /api
