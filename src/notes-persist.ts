@@ -14,6 +14,35 @@ export type TranscriptEntry={role:'clerk'|'learner'|'guide';text:string;ts:strin
 export type StoredEvidence={card_id:string;heard_asr_phrases:string|string[];mo_ichido_count:number;completed:number|boolean};
 export type NotesSnapshot={notes_version:string;content_version:string;summary:unknown;created_at?:string};
 export type SessionBundle={session_id:string;started_at:string;duration_s:number;lesson_id:string;voice_mode:string|null;end_state:string;transcript:TranscriptEntry[];evidence:{card_id:string;heard_asr_phrases:string[];mo_ichido_count:number;completed:boolean}[];notes_version?:string;content_version?:string;notes_snapshot?:NotesSnapshot;review_events?:{event_id:string;card_id:string;kind:string;outcome:string;scheduler_rating:number|null;at:string;counts_for_schedule:boolean}[]};
+// Route notes through the same configured owner API as voice/auth. GitHub
+// Pages is a static mirror, not an API host. Never derive this from the page
+// origin in token-service mode (2026-11-17 owner trial regression).
+export function notesApiEndpoint(tokenServiceEnabled:boolean,tokenEndpoint:string|undefined,pageOrigin:string):string{
+ if(!tokenServiceEnabled)return pageOrigin;
+ if(!tokenEndpoint)throw Error('Owner API endpoint required for notes');
+ return new URL(tokenEndpoint).origin;
+}
+// Explicit owner-triggered retry of retained records, including permanent
+// failures caused by the old Pages routing bug. Never auto-retry the dead list.
+// Clear only successful records; keep invalid/failed records and oversized notes.
+export async function retryRetained(endpoint:string,getToken:()=>string,deps:PersistDeps):Promise<{saved:number;remaining:number}>{
+ const {storage,scope}=deps;if(!storage||!scope)return{saved:0,remaining:0};
+ const queued=loadQueue(storage,scope),dead=loadDead(storage,scope);
+ const all=[...new Map([...queued,...dead].map(b=>[b.session_id,b])).values()];
+ let saved=0;const keepQueue:SessionBundle[]=[],keepDead:SessionBundle[]=[];
+ const deadIds=new Set(dead.map(b=>b.session_id));
+ for(const bundle of all){
+  const result=await persistSession(endpoint,getToken,bundle,{...deps,storage:undefined});
+  if(result==='ok'){saved++;continue;}
+  if(result==='ok_note_kept'){saved++;keepDead.push(bundle);continue;}
+  (deadIds.has(bundle.session_id)||result==='rejected'?keepDead:keepQueue).push(bundle);
+ }
+ // Do not clear first: if a quota error occurs while updating, old copies survive.
+ storage.setItem(QUEUE_PREFIX+scope,JSON.stringify(keepQueue));
+ storage.setItem(DEAD_PREFIX+scope,JSON.stringify(keepDead));
+ return{saved,remaining:keepQueue.length+keepDead.length};
+}
+
 export const MAX_ENTRY_CHARS=4000; // must match worker/notes-endpoint.mjs MAX_TEXT
 const QUEUE_PREFIX='jp-notes-queue-v1:';
 const DEAD_PREFIX='jp-notes-dead-v1:';
