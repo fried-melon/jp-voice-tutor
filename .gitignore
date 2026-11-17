@@ -7,3 +7,8 @@ public/avatar.glb
 deployment/
 build-env.txt
 .dev.vars
+
+public/avatar-shino.glb
+dist-avatar/
+
+dist-shino/

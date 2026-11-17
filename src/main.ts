@@ -28,7 +28,7 @@ document.querySelector('#app')!.innerHTML=`
 </div></section>
 <section class="below"><div><p class="eyebrow">대화 자막 <button id="clear-transcript" class="text-button" type="button" hidden>자막 지우기</button></p><div id="transcript" class="transcript" role="log" aria-label="사용자 발화와 일본어·한국어 응답"><p class="empty">연습을 시작하면 일본어와 한국어 피드백이 여기에 보여요.</p></div><div id="compare" class="compare" hidden></div><p id="usage" class="privacy" aria-live="polite">사용량 정보는 연결 후 여기에 표시돼요. 비용 추정치는 아니에요.</p></div><details id="session-notes" hidden><summary id="session-notes-summary">오늘 세션 노트 (이 화면에만 있어요)</summary><div id="notes-body"></div></details>
 <details id="notes-history" hidden><summary>지난 대화 기록</summary><div id="notes-history-body"></div></details><details><summary>모듈 1 · 편의점 기본 표현 <span>8개</span></summary><ul id="expressions"></ul></details></section>
-<footer>개인용 실험 · 대화는 Google로 전송됩니다. 키나 대화를 공유하지 마세요.<br>초기 오리지널 캐릭터 · 음량 기반 입 움직임 · TalkingHead (MIT) · MPFB rig (CC0) · 일본어 입 모양은 오디오 기반 근사치예요.</footer></main>`;
+<footer>개인용 실험 · 대화는 Google로 전송됩니다. 키나 대화를 공유하지 마세요.<br>초기 오리지널 캐릭터 · 음량 기반 입 움직임 · TalkingHead (MIT) · ${import.meta.env.VITE_AVATAR_SHINO==='true'?'VRoid Project Shino (CC0)':'MPFB rig (CC0)'} · 일본어 입 모양은 오디오 기반 근사치예요.</footer></main>`;
 let recallState=createRecallState();let sessionSince=0;let hintSeen=false;
 let ptt:ReturnType<typeof createPushToTalkSession>|undefined;let unbindPTT:(()=>void)|undefined;
 let ownerVoiceReady=false;

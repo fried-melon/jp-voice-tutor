@@ -12,10 +12,19 @@ export class Avatar {
     ?{cameraView:'head',cameraDistance:1.4,cameraY:0.35,lightAmbientIntensity:1.1,lightDirectIntensity:16}
     :{cameraView:'upper',cameraDistance:0.1};
   this.head=new TalkingHead(container,{...view,lipsyncModules:[],avatarMood:'happy',modelFPS:30,update:()=>this.updateMascot?.()});
+  const shino=import.meta.env.VITE_AVATAR_SHINO==='true';
   // MPFB example is CC0, unlike several non-commercial-only sample avatars.
   let avatarOk=true;
   try{
-    await this.head.showAvatar({url:new URL(import.meta.env.VITE_AVATAR_PREVIEW==='true'?'avatar-hosting-preview.glb':'avatar.glb',document.baseURI).href,body:'F',avatarMood:'happy',lipsyncLang:'en'});
+    if(shino){
+      this.head.opt.cameraY=0.95;this.head.opt.cameraDistance=2.2;
+      const adapter=await import(/* @vite-ignore */ new URL('shino-adapter.mjs',document.baseURI).href);
+      const response=await fetch(new URL('shino-reference.json',document.baseURI));
+      if(!response.ok)throw Error('Avatar reference unavailable');
+      const reference=await response.json();adapter.configureShino(this.head);
+      await this.head.showAvatar({url:new URL('avatar-shino.glb',document.baseURI).href,body:'F',avatarMood:'happy',lipsyncLang:'en'},null,(gltf:any)=>adapter.prepareShino(gltf,reference));
+      adapter.finalizeShino(this.head);
+    }else await this.head.showAvatar({url:new URL(import.meta.env.VITE_AVATAR_PREVIEW==='true'?'avatar-hosting-preview.glb':'avatar.glb',document.baseURI).href,body:'F',avatarMood:'happy',lipsyncLang:'en'});
   }catch(err){/* Model failed: tear down the renderer and let main.ts fall back to FallbackAudio (plain Web Audio + 2D clerk). A half-loaded head cannot own playback safely. */try{this.head.stop();}catch{}container.querySelectorAll('canvas').forEach(c=>c.remove());throw err;}
   const getJaw=()=>{if(!this.streaming||!this.analyser||!this.samples)return 0;this.analyser.getFloatTimeDomainData(this.samples);return playbackJaw(this.samples);};
   if(mode==='human3d'&&avatarOk){/* bare realistic face: TalkingHead canvas stays visible */}
