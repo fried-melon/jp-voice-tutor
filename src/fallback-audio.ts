@@ -1,18 +1,20 @@
+import {watchPlaybackContext} from '../shared/playback-health.mjs';
 // Plain Web Audio playback with the Avatar interface, for devices where the 3D
 // avatar cannot load (no WebGL, very old GPU). Same lesson, voice only.
 import{playbackJaw}from'../shared/playback-envelope.mjs';import{createInitialFace}from'./initial-face';
 export class FallbackAudio {
+ private releaseHealth?:()=>void;
  private analyser?:AnalyserNode;private samples?:Float32Array<ArrayBuffer>;private raf=0;
  private ctx?:AudioContext;private streaming=false;private sources:AudioBufferSourceNode[]=[];private playAt=0;private endNotified=false;private turnEnd=false;private idle=true;private onStartCb?:()=>void;private onEndCb?:()=>void;
  async load(_container:HTMLElement){this.ctx=new AudioContext({sampleRate:24000});this.analyser=this.ctx.createAnalyser();this.analyser.fftSize=512;this.analyser.connect(this.ctx.destination);this.samples=new Float32Array(this.analyser.fftSize);}
  getJaw():number{if(!this.streaming||!this.analyser||!this.samples)return 0;this.analyser.getFloatTimeDomainData(this.samples);return playbackJaw(this.samples);}
  mountFace(container:HTMLElement){const update=createInitialFace(container,()=>this.getJaw());const pump=()=>{update();this.raf=requestAnimationFrame(pump);};this.raf=requestAnimationFrame(pump);}
  unlock(){return this.ctx!.resume();}
- async start(onStart:()=>void,onEnd:()=>void,onFailure:()=>void,signal:AbortSignal){
+ async start(onStart:()=>void,onEnd:()=>void,onFailure:()=>void,signal:AbortSignal,onEvent:(event:{event:string;state:string})=>void=()=>{}){
   if(signal.aborted)return;
   if(this.ctx!.state!=='running')throw Error('Playback is not running');
   this.onStartCb=onStart;this.onEndCb=onEnd;this.streaming=true;this.turnEnd=false;this.idle=true;this.playAt=0;
-  this.ctx!.onstatechange=()=>{if(this.streaming&&this.ctx!.state!=='running')onFailure();};
+  this.releaseHealth?.();this.releaseHealth=watchPlaybackContext(this.ctx!,{active:()=>this.streaming&&!signal.aborted,onFailure,onEvent});
  }
  audio(pcm:Int16Array){
   if(!this.streaming||!this.ctx)return;
@@ -27,5 +29,5 @@ export class FallbackAudio {
  }
  endTurn(){this.turnEnd=true;if(this.sources.length===0&&!this.endNotified){this.endNotified=true;this.turnEnd=false;this.idle=true;this.onEndCb?.();}}
  interrupt(){for(const s of this.sources)try{s.stop();}catch{}this.sources=[];this.playAt=0;this.turnEnd=false;this.idle=true;}
- stop(){this.interrupt();this.streaming=false;}destroy(){this.stop();cancelAnimationFrame(this.raf);}
+ stop(){this.streaming=false;this.releaseHealth?.();this.releaseHealth=undefined;this.interrupt();}destroy(){this.stop();cancelAnimationFrame(this.raf);}
 }

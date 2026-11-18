@@ -12,3 +12,7 @@ public/avatar-shino.glb
 dist-avatar/
 
 dist-shino/
+
+dist-harness/
+dist-sim/
+worker/.*-test.gen.mjs

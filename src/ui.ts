@@ -7,6 +7,7 @@ export function addTranscript(role: string, text: string, append: boolean) {
  if (!append || p?.dataset.role !== role) { p = document.createElement('p'); p.dataset.role = role; box.append(p); }
  p.textContent = (p.textContent || '') + text;
  box.scrollTop = box.scrollHeight;
+ const caption=$('caption-current');if(caption&&role!=='guide'){caption.textContent=(role==='user'?'내 말 · ':'점원 · ')+(p.textContent||'').replace(/【(?:통과|교정|못들음)】/g,'');}
 }
 
 export const TRANSCRIPT_EMPTY = '연습을 시작하면 일본어와 한국어 피드백이 여기에 보여요.';

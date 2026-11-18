@@ -63,7 +63,7 @@ ok('config: LIMITS+NOTES_DB+ASSETS only, migrations [v1,v2], vars NOTES_ENABLED=
 // rebuilding). If this fails, re-run npm run build with deployment/build-env.txt.
 import{createHash}from'node:crypto';
 const h=p=>createHash('sha256').update(readFileSync(p)).digest('hex');
-for(const glb of['avatar.glb','avatar-hosting-preview.glb']){
+for(const glb of['avatar.glb','avatar-hosting-preview.glb',...(env.VITE_AVATAR_SHINO==='true'?['avatar-shino.glb']:[])]){
  if(h(dist+glb)!==h(root+'public/'+glb))fail('deployment/dist/'+glb+' differs from public/ - stale build, re-run npm run build');
 }
 ok('assets: deployment/dist GLBs byte-identical to public/');

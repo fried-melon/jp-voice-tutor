@@ -11,7 +11,7 @@ let step='';
 async function waitFn(page,fn,arg){step=fn.toString().slice(0,80);console.log('STEP wait:',step);await page.waitForFunction(fn,arg,{timeout:15000,polling:100});}
 async function run(){
  await setup();
- const browser=await chromium.launch({executablePath:process.env.CHROME_PATH||'/usr/bin/google-chrome',args:['--autoplay-policy=no-user-gesture-required']});
+ const browser=await chromium.launch({executablePath:process.env.CHROME_PATH||'/usr/bin/google-chrome',args:['--no-sandbox','--enable-unsafe-swiftshader','--autoplay-policy=no-user-gesture-required']});
  try{
   // happy path: start -> guided opening -> model reply -> extend -> notice -> stop -> retained transcript -> clear
   {const p=await newPage(browser);await p.selectOption('#duration','120');
@@ -19,7 +19,7 @@ async function run(){
    await p.fill('#key','harness-test-key');await click(p,'#start');
    await waitFn(p,()=>document.getElementById('transcript').textContent.includes('いらっしゃいませ'));
    await waitFn(p,()=>!document.getElementById('extend').hidden);
-   await click(p,'#extend');
+   await click(p,'#session-options-toggle');await click(p,'#extend');
    await waitFn(p,()=>document.getElementById('extend').hidden&&!document.getElementById('notice').hidden&&document.getElementById('notice').textContent.includes('5분'));
    await click(p,'#stop');
    await waitFn(p,()=>document.getElementById('status').textContent.includes('종료했어요'));
@@ -54,9 +54,9 @@ async function run(){
    await p.fill('#key','harness-test-key');await click(p,'#start');
    await waitFn(p,()=>document.getElementById('transcript').textContent.includes('いらっしゃいませ'));
    await waitFn(p,()=>!document.getElementById('recall').hidden&&!document.getElementById('recall-word').disabled);
-   await click(p,'#recall-word');
+   await click(p,'#session-options-toggle');await click(p,'#recall-word');
    await waitFn(p,()=>document.getElementById('recall-word').disabled);
-   await waitFn(p,()=>document.getElementById('transcript').textContent.split('いらっしゃいませ').length>=3);
+   await waitFn(p,()=>document.getElementById('transcript').textContent.includes('복습을 시작할게요.'));
    await click(p,'#stop');
    const hid=await p.evaluate(()=>document.getElementById('recall').hidden);
    if(!hid)throw Error('recall section not hidden after stop');

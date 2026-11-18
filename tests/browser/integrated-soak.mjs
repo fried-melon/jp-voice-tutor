@@ -1,0 +1,15 @@
+// Renderer soak with no provider calls. Exposes head only in intercepted local code.
+import{chromium}from'playwright-core';import{spawn}from'node:child_process';import{readFileSync,writeFileSync}from'node:fs';import assert from'node:assert/strict';
+const server=spawn('python3',['-m','http.server','8478','--directory','dist-sim'],{stdio:'ignore'});const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox','--enable-unsafe-swiftshader']});
+try{const p=await browser.newPage({viewport:{width:390,height:844},hasTouch:true});const errors=[];p.on('pageerror',e=>errors.push(String(e)));
+ await p.route('**/vendor/talkinghead/talkinghead.mjs',r=>r.fulfill({contentType:'text/javascript',body:readFileSync('public/vendor/talkinghead/talkinghead.mjs','utf8').replace('constructor(node, opt = null ) {','constructor(node, opt = null ) { window.__head=this;')}));
+ await p.goto('http://127.0.0.1:8478');await p.waitForFunction(()=>document.getElementById('avatar-state')?.textContent.includes('준비됐어요'),{timeout:60000});
+ await p.waitForTimeout(3500);
+ const start=await p.evaluate(()=>({clock:__head.animClock,camera:__head.camera.position.toArray(),rotation:__head.camera.quaternion.toArray(),controls:__head.controls.enabled}));assert.equal(start.controls,false);
+ await p.mouse.move(180,420);await p.mouse.down();await p.mouse.move(20,680,{steps:25});await p.mouse.up();await p.mouse.wheel(0,900);await p.waitForTimeout(1000);
+ const camera=await p.evaluate(()=>({position:__head.camera.position.toArray(),rotation:__head.camera.quaternion.toArray()}));assert.ok(camera.position.every((v,i)=>Math.abs(v-start.camera[i])<1e-8));assert.ok(camera.rotation.every((v,i)=>Math.abs(v-start.rotation[i])<1e-8));
+ await p.evaluate(()=>{document.body.dataset.session='active';document.getElementById('session-caption').hidden=false;__head.setFixedValue('jawOpen',.55,0);});await p.waitForTimeout(900);await p.screenshot({path:'/downloads/face-qa/integrated-mouth-open.png'});
+ await p.evaluate(()=>{__head.setFixedValue('jawOpen',0,0);__head.setFixedValue('eyeBlinkLeft',1,0);__head.setFixedValue('eyeBlinkRight',1,0);});await p.waitForTimeout(900);await p.screenshot({path:'/downloads/face-qa/integrated-blink.png'});
+ await p.evaluate(()=>{for(const key of ['jawOpen','eyeBlinkLeft','eyeBlinkRight'])__head.setFixedValue(key,null,0);});await p.waitForTimeout(95000);
+ const end=await p.evaluate(()=>({clock:__head.animClock,camera:__head.camera.position.toArray(),rotation:__head.camera.quaternion.toArray(),drawCalls:__head.renderer.info.render.calls,triangles:__head.renderer.info.render.triangles}));assert.ok(end.clock>start.clock+90000);assert.ok(end.camera.every((v,i)=>Math.abs(v-start.camera[i])<1e-8));assert.ok(end.rotation.every((v,i)=>Math.abs(v-start.rotation[i])<1e-8));assert.equal(errors.length,0,errors.join('\n'));await p.screenshot({path:'/downloads/face-qa/integrated-soak-end.png'});const report={start,end,errors};writeFileSync('/downloads/face-qa/integrated-soak.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+}finally{await browser.close();server.kill();}

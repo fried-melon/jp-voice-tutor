@@ -24,6 +24,8 @@ try{
   await page.goto('http://127.0.0.1:4339/');
   await page.waitForSelector('#notes-retry-retained',{timeout:30000});
   assert.equal(saved,false,'dead list never auto-retried');
+  assert.equal(await page.locator('#google-signin-ui').isVisible(),false);
+  assert.equal(await page.locator('#owner-account-chip').isVisible(),true);
   await page.locator('#notes-recovery').scrollIntoViewIfNeeded();
   await page.screenshot({path:'/downloads/notes-recovery-before-'+name+'.png'});
   await page.click('#notes-retry-retained');
@@ -33,6 +35,9 @@ try{
   assert.equal(errors.length,0,JSON.stringify(errors));
   await page.locator('#notice').scrollIntoViewIfNeeded();
   await page.screenshot({path:'/downloads/notes-recovery-after-'+name+'.png'});
+  await page.getByRole('button',{name:'이 브라우저에서 로그아웃',exact:true}).click();
+  assert.equal(await page.locator('#google-signin-ui').isVisible(),true);
+  assert.equal(await page.locator('#owner-account-chip').isVisible(),false);
   console.log(name,'PASS: real built app routes to Worker, explicit retry saves fake retained record, success UI, no voice; calls',calls.length);
   await page.close();
  }

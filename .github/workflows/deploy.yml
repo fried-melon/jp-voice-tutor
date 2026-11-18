@@ -19,12 +19,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node scripts/restore-avatar.mjs
+      - run: node scripts/restore-shino.mjs
       - run: node scripts/verify-assets.mjs
       - run: npm test
       - run: npm run build
         env:
           VITE_FACE_MODE: human3d
           VITE_AVATAR_PREVIEW: "true"
+          VITE_AVATAR_SHINO: "true"
           VITE_INITIAL_2D_FACE: "true"
           VITE_OWNER_TOKEN_SERVICE_ENABLED: "true"
           VITE_OWNER_TOKEN_ENDPOINT: https://jp-tutor-owner-token.leejeongjin7178.workers.dev/api/live-token

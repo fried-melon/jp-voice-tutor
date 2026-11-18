@@ -1,9 +1,11 @@
+import {watchPlaybackContext} from '../shared/playback-health.mjs';
 import {playbackJaw} from '../shared/playback-envelope.mjs';
 import {createMascot} from './mascot';
 import {createInitialFace} from './initial-face';
 // TalkingHead is loaded from a pinned, MIT-licensed upstream revision.
 const ROOT=new URL('vendor/talkinghead/',document.baseURI).href;
 export class Avatar {
+ private releaseHealth?:()=>void;
  private analyser?:AnalyserNode;private samples?:Float32Array<ArrayBuffer>;private pending:Promise<void>=Promise.resolve();private head: any; private elapsed=0; private streaming=false;private updateMascot?:()=>void;
  async load(container:HTMLElement){
   const {TalkingHead}=await import(/* @vite-ignore */ ROOT+'talkinghead.mjs');
@@ -11,7 +13,10 @@ export class Avatar {
   const view=mode==='human3d'
     ?{cameraView:'head',cameraDistance:1.4,cameraY:0.35,lightAmbientIntensity:1.1,lightDirectIntensity:16}
     :{cameraView:'upper',cameraDistance:0.1};
-  this.head=new TalkingHead(container,{...view,lipsyncModules:[],avatarMood:'happy',modelFPS:30,update:()=>this.updateMascot?.()});
+  this.head=new TalkingHead(container,{...view,cameraRotateEnable:false,cameraZoomEnable:false,cameraPanEnable:false,lipsyncModules:[],avatarMood:'happy',modelFPS:30,update:()=>this.updateMascot?.()});
+  // The scene is not a 3D editor: gestures must scroll the page, never orbit.
+  this.head.controls.enabled=false;
+  this.head.renderer.domElement.style.pointerEvents='none';
   const shino=import.meta.env.VITE_AVATAR_SHINO==='true';
   // MPFB example is CC0, unlike several non-commercial-only sample avatars.
   let avatarOk=true;
@@ -32,12 +37,12 @@ export class Avatar {
   else{container.querySelectorAll('canvas').forEach(c=>c.style.visibility='hidden');this.updateMascot=createInitialFace(container,getJaw);}
  }
  unlock(){if(this.head.audioCtx.sampleRate!==24000)this.head.initAudioGraph(24000);return this.head.audioCtx.resume();}
- async start(onStart:()=>void,onEnd:()=>void,onFailure:()=>void,signal:AbortSignal){
+ async start(onStart:()=>void,onEnd:()=>void,onFailure:()=>void,signal:AbortSignal,onEvent:(event:{event:string;state:string})=>void=()=>{}){
   const previous=this.pending;let release!:()=>void;this.pending=new Promise<void>(r=>release=r);
   await previous;
   try{if(signal.aborted)return;await this.head.streamStart({sampleRate:24000,lipsyncType:'blendshapes',waitForAudioChunks:true},onStart,()=>{this.elapsed=0;onEnd();});
    if(signal.aborted){this.stop();return;}if(this.head.audioCtx.state!=='running')throw Error('Playback is not running');
-   this.head.audioCtx.onstatechange=()=>{if(this.streaming&&this.head.audioCtx.state!=='running')onFailure();};this.analyser=this.head.audioAnalyzerNode;if(this.analyser){this.analyser.fftSize=512;this.samples=new Float32Array(this.analyser.fftSize);}this.streaming=true;this.elapsed=0;
+   this.releaseHealth?.();this.releaseHealth=watchPlaybackContext(this.head.audioCtx,{active:()=>this.streaming&&!signal.aborted,onFailure,onEvent});this.analyser=this.head.audioAnalyzerNode;if(this.analyser){this.analyser.fftSize=512;this.samples=new Float32Array(this.analyser.fftSize);}this.streaming=true;this.elapsed=0;
   }finally{release();}
  }
 
@@ -50,5 +55,5 @@ export class Avatar {
  }
  endTurn(){this.head?.streamNotifyEnd();}
  interrupt(){if(this.streaming)this.head.streamInterrupt();this.elapsed=0;}
- stop(){this.interrupt();this.head?.streamStop();this.streaming=false;}
+ stop(){this.streaming=false;this.releaseHealth?.();this.releaseHealth=undefined;this.head?.streamInterrupt();this.elapsed=0;this.head?.streamStop();}
 }
