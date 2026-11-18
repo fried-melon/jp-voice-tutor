@@ -21,7 +21,7 @@ export async function mountOwnerLogin(container:HTMLElement,clientId:string,onPr
  const signout=document.createElement('button');signout.type='button';signout.className='text-button';signout.textContent='이 브라우저에서 로그아웃';signout.hidden=true;
  const revokeAll=document.createElement('button');revokeAll.type='button';revokeAll.className='text-button';revokeAll.textContent='모든 기기에서 로그아웃';revokeAll.hidden=true;
  container.replaceChildren(button,account,note,signout,revokeAll);let expiry:ReturnType<typeof setTimeout>|undefined;
- let currentProof='';
+ let currentProof='';let resumedCookie=false;
  // forget: memory only (page hide). clear: also ends this browser's server session cookie.
  // Neither can invalidate a credential copied elsewhere — only revokeAll does (server-side floor).
  const forget=()=>{clearTimeout(expiry);currentProof='';button.hidden=false;account.hidden=true;onProof('');signout.hidden=true;revokeAll.hidden=true;window.google?.accounts.id.disableAutoSelect();};
@@ -33,7 +33,7 @@ export async function mountOwnerLogin(container:HTMLElement,clientId:string,onPr
  };
  signout.addEventListener('click',clear);revokeAll.addEventListener('click',()=>void revokeEverywhere());window.addEventListener('pagehide',forget);
  // Silent resume: a valid HttpOnly session cookie skips the Google tap entirely.
- if(session){try{const resumed=await fetch(new URL('/api/owner-check',session.checkEndpoint),{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error'});if(resumed.ok){const data=await resumed.json();if(data.ownerVerified===true){currentProof=SESSION_PROOF;button.hidden=true;account.hidden=false;onProof(SESSION_PROOF);signout.hidden=false;revokeAll.hidden=false;note.textContent='저장된 로그인 정보로 본인 확인을 마쳤어요. 다시 로그인할 필요가 없어요.';return clear;}}}catch{}}
+ if(session){try{const resumed=await fetch(new URL('/api/owner-check',session.checkEndpoint),{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error'});if(resumed.ok){const data=await resumed.json();if(data.ownerVerified===true){currentProof=SESSION_PROOF;button.hidden=true;account.hidden=false;onProof(SESSION_PROOF);signout.hidden=false;revokeAll.hidden=false;note.textContent='저장된 로그인 정보로 본인 확인을 마쳤어요. 다시 로그인할 필요가 없어요.';resumedCookie=true;}}}catch{}}
  await loadIdentityScript();
  const nonce=Array.from(crypto.getRandomValues(new Uint8Array(24)),b=>b.toString(16).padStart(2,'0')).join('');
  const identity=window.google?.accounts.id;if(!identity)throw Error('Google login unavailable');
@@ -44,7 +44,7 @@ export async function mountOwnerLogin(container:HTMLElement,clientId:string,onPr
  }});identity.renderButton(button,{theme:'outline',size:'large',text:'signin_with'});
  // One Tap: the credential is delivered in-page, which also covers browsers
  // where the button's popup flow cannot return the credential to this tab.
- identity.prompt();
+ if(!resumedCookie)identity.prompt();
  return clear;
 }
 
