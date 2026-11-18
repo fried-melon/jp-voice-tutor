@@ -9,7 +9,7 @@ export function mountOwnerCheck(container:HTMLElement,endpoint:string,fetcher:ty
  const title=document.createElement('strong');title.textContent='본인 확인 상세 (점검용)';
  const result=document.createElement('p');result.className='privacy';result.setAttribute('role','status');result.setAttribute('aria-live','polite');result.textContent='이 탭에는 로그인 정보가 없어요. 아래 확인 버튼은 로그인 알림을 보내지 않아요.';
  const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='본인 확인만 점검 (음성 없음)';button.disabled=true;
- const help=document.createElement('p');help.className='privacy';help.textContent='현재 탭의 로그인 정보만 확인해요. 마이크·음성·사용 횟수는 쓰지 않아요. 새로고침하거나 로그인 정보를 지우면 다시 로그인해야 해요.';
+ const help=document.createElement('p');help.className='privacy';help.textContent='본인 확인만 점검해요. 마이크·음성·사용 횟수는 쓰지 않아요. 저장된 로그인은 같은 사이트에서 이어져요. 기록 접근에는 Google 재확인이 필요할 수 있어요.';
  panel.append(title,result,button,help);container.append(panel);
  const check=async()=>{
   if(!proof||busy)return;busy=true;button.disabled=true;const current=revision;const controller=new AbortController();abort=controller;
