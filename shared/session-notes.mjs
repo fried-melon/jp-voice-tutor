@@ -1,3 +1,4 @@
+import{findAcceptedAtom}from'./turn-feedback.mjs';
 // Ephemeral end-of-session notes. Grounded signals only: ASR transcript matches,
 // repair-phrase use, turn counts, duration. ASR success is never pronunciation
 // evidence; comments carry that uncertainty explicitly.
@@ -5,7 +6,7 @@ export function buildSessionNotes({lesson,userText,modelText,seconds}){
  if(!lesson||typeof userText!=='string'||typeof modelText!=='string')throw Error('Invalid notes input');
  const matched=[];
  for(const [key,variants] of Object.entries(lesson.accepted||{})){
-  const hit=(variants||[]).find(v=>userText.includes(v));
+  const hit=(variants||[]).find(v=>findAcceptedAtom(userText,{accepted:{candidate:[v]}}));
   if(hit)matched.push({key,hit});
  }
  const repairsUser=(userText.match(/もう一度/g)||[]).length;
@@ -25,7 +26,7 @@ export function buildSessionNotes({lesson,userText,modelText,seconds}){
 // Saved-history notes version: the history detail RE-CREATES this summary from the
 // stored transcript + current lesson content (nothing derived is stored). Bump when
 // the notes logic changes; the UI labels reconstructions with it.
-export const NOTES_VERSION='notes-v1';
+export const NOTES_VERSION='notes-v2';
 // Card evidence minted at session finish. Grounded signals only: matched variant
 // strings ASR heard, raw もう一度 occurrence count, and session completion
 // (completion != mastery). One sentence card per practiced lesson; word cards and

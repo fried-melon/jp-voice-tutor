@@ -1,3 +1,5 @@
+import{isStopRequest}from'../shared/stop-intent.mjs';
+import {presentTurn} from '../shared/turn-presentation.mjs';
 import {TRAVEL_SCENES,travelSceneFor} from '../shared/travel-scenes.mjs';
 import {createAudioDiagnostics} from '../shared/playback-health.mjs';
 import {createSessionPlan} from '../shared/session-plan.mjs';
@@ -166,27 +168,19 @@ function storageSet(){try{localStorage.removeItem('jp-tutor-key');}catch{}}
 storageSet();
 hintSeen=true; // The opening card always models the example answer; in-session recall is never independent evidence.
 function handleFeedbackTurn(text:string){
- const parsed=parseTurnMarker(text);if(!parsed.marker)return;
- // The model's pass marker is never sufficient: verify the ASR transcript against
- // the lesson's accepted atoms first (spec C). An unverified "pass" is a correction.
  const lessonForCheck=lessons.find(l=>l.id===lessonSelect.value);
- if(sessionPlan.phase!=='scene'||applicationInjected){
-  // Free-topic utterances are not compared to the old scene's target phrase.
-  // Model feedback is conversational only, never a pass/mastery badge.
-  const para=$('transcript').lastElementChild as HTMLElement|null;
-  if(para?.dataset.role==='model')para.textContent=parsed.rest;
-  $('compare').hidden=true;return;
- }
- const outcome=resolveTurnOutcome({marker:parsed.marker,userText:userTurnText,lesson:lessonForCheck});
- if(outcome.downgradedFrom){const para=$('transcript').lastElementChild as HTMLElement|null;if(para?.dataset.role==='model')para.textContent='인식된 말과 시작 목표 표현을 자동으로 대조하지 못했어요. '+parsed.rest;$('compare').hidden=true;return;}
- const marker=outcome.marker;const rest=parsed.rest;
- const box=$('transcript');const para=box.lastElementChild as HTMLElement|null;
- if(para?.dataset.role==='model'&&rest!==text){para.textContent=rest;para.dataset.feedback=marker;const badge=document.createElement('span');badge.className='fb-badge fb-'+marker;badge.textContent=marker==='pass'?'통과':marker==='correction'?'교정':'못 들음';para.prepend(badge);}
+ const shown=presentTurn({text,userText:userTurnText,lesson:lessonForCheck,phase:sessionPlan.phase,targetDone:applicationInjected});
+ if(!parseTurnMarker(text).marker)return;
+ const marker=shown.marker;const rest=shown.text;
+ const para=$('transcript').lastElementChild as HTMLElement|null;
+ if(para?.dataset.role==='model'){para.textContent=rest;delete para.dataset.feedback;if(marker){para.dataset.feedback=marker;const badge=document.createElement('span');badge.className='fb-badge fb-'+marker;badge.textContent=marker==='pass'?'통과':marker==='correction'?'교정':'못 들음';para.prepend(badge);}}
+ const caption=$('caption-current');if(caption)caption.textContent='점원 · '+rest;
+ if(!marker){$('compare').hidden=true;return;}
  const cmp=$('compare');
  if(marker==='unclear'){cmp.hidden=true;return;}
  if(marker==='pass'){sessionPlan.goal();applicationInjected=true;correctionStreak=0;
   const lesson=lessons.find(l=>l.id===lessonSelect.value);
-  cmp.replaceChildren();const ok=document.createElement('p');ok.className='cmp-pass';ok.textContent='방금 발화가 목표 표현과 문자로 일치했어요.';const t=document.createElement('p');t.className='cmp-line';t.lang='ja';t.textContent='인식된 표현: '+outcome.atom+' · 목표: '+(lesson?.target||'');cmp.append(ok,t);cmp.hidden=false;
+  cmp.replaceChildren();const ok=document.createElement('p');ok.className='cmp-pass';ok.textContent='방금 발화가 목표 표현과 문자로 일치했어요.';const t=document.createElement('p');t.className='cmp-line';t.lang='ja';t.textContent='인식된 표현: '+shown.atom+' · 목표: '+(lesson?.target||'');cmp.append(ok,t);cmp.hidden=false;
   // Do not inject a new model turn here: turnComplete can precede audio drain.
   // The timed session plan transitions only when playback is idle.
   return;}
@@ -242,6 +236,7 @@ start.addEventListener('click',async()=>{
   startupStage='playback';await Promise.race([audioUnlock,new Promise((_,reject)=>setTimeout(()=>reject(Error('Audio resume timeout')),3000))]);if(id!==run)return;await avatar.start(()=>{if(id===run){playback=true;audioDiagnostics.event('playback-start');status(mode==='push-to-talk'?'점원이 말하고 있어요. 버튼으로 다음 말을 시작할 수 있어요.':'점원이 말하고 있어요. 끼어들어도 괜찮아요.');}},()=>{if(id===run){playback=false;audioDiagnostics.event('playback-end');if(serverDone)status('내 차례예요. 일본어로 답해 보세요.');updateRecall();}},()=>{if(id===run){warn('[playback/interrupted] 소리 재생이 중단됐어요. 시작을 다시 눌러 주세요.');finish('재생 중단',tokenServiceEnabled,'playback_interrupted');}},controller.signal,e=>audioDiagnostics.event(e.event,e.state));if(id!==run)return;
   startupStage='websocket';await thisLive.connect(credential,lessonPrompt(prompt,lessons.find(l=>l.id===lessonSelect.value),nickname),m=>{
    if(id!==run)return;if(m.goAway){warn('서버가 곧 연결을 종료해요. 연결이 끝나면 시작을 다시 눌러 주세요.');finish('서버 연결 종료 예고',tokenServiceEnabled,'server_goaway');return;}if(m.usageMetadata){$('usage').textContent=usageSummary(m.usageMetadata);}const c=m.serverContent;if(!c)return;
+   if(c.inputTranscription?.finished&&isStopRequest((appendInput?userTurnText:'')+(c.inputTranscription.text||''))){if(c.inputTranscription.text)addCap('user',c.inputTranscription.text,appendInput);finish('요청하신 대로 연습을 종료했어요.',tokenServiceEnabled,'user_stop');return;}
    if(c.interrupted){avatar.interrupt();audioDiagnostics.event('server-interruption');playback=false;serverDone=false;discardOldTurn=true;appendOutput=false;status('듣고 있어요. 편하게 말해 주세요.');}
    if(!c.interrupted&&!discardOldTurn)for(const part of c.modelTurn?.parts||[]){if(part.inlineData?.data){clearTimeout(firstOutput);audioDiagnostics.chunk();serverDone=false;playback=true;avatar.audio(decodePCM(part.inlineData.data));status('점원 음성을 재생하고 있어요…');}}
    if(c.inputTranscription?.text){if(!appendInput){userTurnText='';sessionPlan.learnerTurn();}userTurnText+=c.inputTranscription.text;addCap('user',c.inputTranscription.text,appendInput);appendInput=true;}

@@ -17,5 +17,10 @@ test('no matched expression says so without judgment words',()=>{
 });
 test('last lesson closing omits a next title',()=>{
  const lines=buildClosingLines({lesson,userText:'持っていません',seconds:30,nextTitle:undefined});
- assert.ok(lines[3].includes('다 해 봤어요'));
+ assert.ok(lines[3].includes('여기까지'));
+});
+
+test('closing never counts quoted or question suffix substrings as target evidence',()=>{
+ const lines=buildClosingLines({lesson,userText:'持っていませんか。\n持っていません이라는 뜻이 뭐예요?',seconds:10});
+ assert.ok(!lines[1].includes('持っていません'));
 });

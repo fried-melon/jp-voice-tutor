@@ -21,15 +21,19 @@ export function normalizeJa(s){return String(s??'').replace(/[\s。、！？!?.,
 // Returns aligned segment lists: {learner:[{text,same}], target:[{text,same}]}.
 // Pass verification (spec C: no fake mastery). A model-placed 【통과】 marker is a
 // display claim only — a turn counts as a pass solely when the learner's ASR
-// transcript actually contains one of the lesson's accepted utterance atoms.
-// Matching is normalized containment (whitespace/punctuation-insensitive), the
+// transcript contains a whole accepted utterance unit.
+// Matching is normalized unit equality (whitespace/punctuation-insensitive), the
 // same grounded rule the end-of-session notes use; no fuzzy or model-judged passes.
 export function findAcceptedAtom(userText,lesson){
  if(!lesson||typeof userText!=='string')return null;
- const text=normalizeJa(userText);if(!text)return null;
  const atoms=[...new Set([lesson.target,...Object.values(lesson.accepted||{}).flat()].filter(a=>typeof a==='string'&&a))];
- atoms.sort((a,b)=>normalizeJa(b).length-normalizeJa(a).length); // longest first: a long atom wins over its short substring
- for(const a of atoms){const n=normalizeJa(a);if(n.length>=2&&text.includes(n))return a;}
+ atoms.sort((a,b)=>normalizeJa(b).length-normalizeJa(a).length);
+ // Match whole utterance units, not substrings. "はい、違います" and
+ // "持っていませんか" are not verified instances of はい / 持っていません.
+ // Split only explicit sentence boundaries, not Japanese commas. Korean
+ // commentary/quotes in the same unit are conservative non-evidence.
+ const units=userText.split(/[。！？!?\n]+/).map(normalizeJa).filter(Boolean);
+ for(const a of atoms){const n=normalizeJa(a);if(n.length>=2&&units.includes(n))return a;}
  return null;
 }
 // Effective turn outcome: an unverified pass marker is downgraded to a correction,
